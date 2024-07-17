@@ -2,10 +2,11 @@ import { Routes, Route}  from 'react-router-dom';
 
 import Header from "./components/headers/Header"
 import Home from "./components/home/Home"
-import GameList from './components/game-list/Game-list';
+
 import GameCreate from './components/game-create/GameCreate';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
+import GameList from './components/game-list/GameList';
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={ <Home />} />
-          <Route path="/games" element={ <GameList/>} />
+          <Route path="/games" element={ <GameList />} />
           <Route path="/games/create" element={<GameCreate />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

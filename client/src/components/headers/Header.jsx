@@ -9,7 +9,7 @@ export default function Header() {
                 <Link className="home" to="/">GamesPlay</Link>
             </h1>
             <nav>
-                <Link href="/games">All games</Link>
+                <Link to="/games">All games</Link>
                 {/* Logged-in users */}
                 <div id="user">
                     <Link to="/games/create">Create Game</Link>
