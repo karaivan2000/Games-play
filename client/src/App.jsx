@@ -8,9 +8,16 @@ import Login from './components/login/Login';
 import Register from './components/register/Register';
 import GameList from './components/game-list/GameList';
 import GameDetails from './components/game-details/gameDetails';
+import { useState } from 'react';
 
 
 function App() {
+  const [auth, setAuth] = useState();
+
+  const loginSubmitHandler = (values) => {
+    console.log(values);
+  }
+
   return (
     <div id="box">
         <Header/>
@@ -19,7 +26,7 @@ function App() {
           <Route path="/" element={ <Home />} />
           <Route path="/games" element={ <GameList />} />
           <Route path="/games/create" element={<GameCreate />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login loginSubmitHandler={loginSubmitHandler}/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/games/:gameId" element={<GameDetails />} />
         </Routes>
