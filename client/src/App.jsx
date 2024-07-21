@@ -1,22 +1,30 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+import * as authService from "./services/authService";
+import AuthContext from './context/authContext';
+import Path from './path';
 
 import Header from "./components/headers/Header"
 import Home from "./components/home/Home"
-
 import GameCreate from './components/game-create/GameCreate';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
 import GameList from './components/game-list/GameList';
 import GameDetails from './components/game-details/gameDetails';
-import { useState } from 'react';
-import AuthContext from './context/authContext';
+
 
 
 function App() {
   const [auth, setAuth] = useState();
+  const navigate = useNavigate();
 
-  const loginSubmitHandler = (values) => {
-    console.log(values);
+  const loginSubmitHandler = async (values) => {
+    const result = await authService.login(values.email, values.password);
+
+    setAuth(result);
+
+    navigate(Path.Home);
   }
 
   return (
