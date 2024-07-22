@@ -1,6 +1,6 @@
 import * as request from "../lib/request";
 
-const baseUrl = `http://localhost:3030/jsonstore/commnets`;
+const baseUrl = `http://localhost:3030/data/commnets`;
 
 export const getAll = async (gameId) => {
     const query = new URLSearchParams({
@@ -9,7 +9,8 @@ export const getAll = async (gameId) => {
 
     const result = await request.get(`${baseUrl}?${query}`);
 
-    return Object.values(result);
+    return result;
+    //return result.filter(comment => comment.gameId === gameId);
 };
 
 export const create = async (gameId, username, text) => {
