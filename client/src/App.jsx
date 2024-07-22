@@ -12,10 +12,17 @@ import Login from './components/login/Login';
 import Register from './components/register/Register';
 import GameList from './components/game-list/GameList';
 import GameDetails from './components/game-details/gameDetails';
+import Logout from './components/logout/Logout';
+
 
 
 function App() {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(() => {
+    localStorage.removeItem(`accessToken`);
+
+    return {};
+  });
+  
   const navigate = useNavigate();
 
   const loginSubmitHandler = async (values) => {
@@ -23,27 +30,38 @@ function App() {
 
     setAuth(result);
 
+    localStorage.setItem(`accessToken`, result.accessToken);
+
     navigate(Path.Home);
   };
 
-  const registerSubmitHandler = async(values) => {
+  const registerSubmitHandler = async (values) => {
     const result = await authService.register(values.email, values.password);
 
     setAuth(result);
 
+    localStorage.setItem(`accessToken`, result.accessToken);
+
     navigate(Path.Home);
   };
 
-  const values = { 
+  const logoutHandler = () => {
+    setAuth({});
+
+    localStorage.removeItem(`accessToken`);
+  };
+
+  const values = {
     loginSubmitHandler,
     registerSubmitHandler,
+    logoutHandler,
     username: auth.username || auth.email,
     email: auth.email,
     isAuthenticated: !!auth.email,
   };
 
   return (
-    <AuthContext.Provider value={ values }>
+    <AuthContext.Provider value={values}>
       <div id="box">
         <Header />
 
@@ -54,6 +72,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/games/:gameId" element={<GameDetails />} />
+          <Route path={Path.Logout} element={<Logout />} />
         </Routes>
 
       </div>
