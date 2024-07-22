@@ -2,7 +2,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import * as authService from "./services/authService";
-import AuthContext from './context/authContext';
+import { AuthProvider } from './context/authContext';
 import Path from './path';
 
 import Header from "./components/headers/Header"
@@ -61,7 +61,7 @@ function App() {
   };
 
   return (
-    <AuthContext.Provider value={values}>
+    <AuthProvider value={values}>
       <div id="box">
         <Header />
 
@@ -76,7 +76,7 @@ function App() {
         </Routes>
 
       </div>
-    </AuthContext.Provider>
+    </AuthProvider>
   )
 }
 
