@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useReducer, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import * as gameService from "../../services/gameService";
 import * as commentService from "../../services/commentService";
@@ -16,7 +16,8 @@ export default function GameDetails() {
     //const [comments, setComments] = useState([]);
     const [comments, dispatch] = useReducer(reducer, []);
     const { gameId } = useParams();
-   
+    const navigate = useNavigate();
+
     useEffect(() => {
         gameService.getOne(gameId)
             .then(setGame)
@@ -44,14 +45,22 @@ export default function GameDetails() {
         });
     };
 
-    const initialValues = useMemo(() => ({
-        comment: ``,
-    }), []);
+    const deleteButtonClickHandler = async () => {
+        const hasConfirmed = confirm(`Are you sure you want to delete ${game.title}`);
 
-    const {values, onChange, onSubmit } = useForm(addCommentHandler, initialValues);
+        if (hasConfirmed) {
+            await gameService.remove(gameId);
+
+            navigate(`/games`);
+        }
+    };
+
+    const { values, onChange, onSubmit } = useForm(addCommentHandler, {
+        comment: ``,
+    });
 
     const isOwner = userId === game._ownerId;
-    
+
     return (
         <section id="game-details">
             <h1>Game Details</h1>
@@ -85,13 +94,11 @@ export default function GameDetails() {
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
                 {isOwner && (
                     <div className="buttons">
-                        <Link to={pathToUrl(Path.GameEdit, {gameId})} className="button">
+                        <Link to={pathToUrl(Path.GameEdit, { gameId })} className="button">
                             Edit
                         </Link>
-                        <Link to="/games/:gameId/delete" className="button">
-                            Delete
-                        </Link>
-                    </div> 
+                        <button className="button" onClick={deleteButtonClickHandler}>Delete</button>
+                    </div>
                 )}
 
             </div>
